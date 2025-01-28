@@ -1,17 +1,3 @@
-# TERM STARTUP TASKS (DELETE SECTION AFTER COMPLETING)
-
-One team member:
-
-- [ ] Create [MongoDB Atlas database](https://www.mongodb.com/atlas/database)
-- [ ] Make an `.env` file in the root directory, according to the format specified by `.env.example`
-- [ ] Securely share `.env` with team, e.g. with [Doppler Share](https://share.doppler.com/)
-
-Every team member creates their own PR that:
-
-- [ ] Clone repo and `yarn install`
-- [ ] Create a local `.env` file with secrets
-- [ ] Adds their name to the Authors section below
-
 # CRUD Template - Backend - Prisma
 
 ![CI](https://github.com/dali-lab/crud-template-backend-prisma/actions/workflows/ci.yml/badge.svg)
@@ -97,10 +83,6 @@ For this setup, we will use MongoDB as the database Prisma operates upon. It sho
 
 ESLint is set up in this project. To keep code clean, always remember to run `yarn run lint` and fix any lint problems before merging into master.
 
-#### Unit / Integration Testing
-
-TBD
-
 ## Deployment
 
 [Where is the app deployed? i.e. Expo, Surge, TestFlight etc.]
@@ -108,21 +90,3 @@ TBD
 [What are the steps to re-deploy the project with any new changes?]
 
 [How does one get access to the deployed project?]
-
-## Authors
-
-- Firstname Lastname 'YY, role
-
-## Acknowledgments
-
-We would like to thank [anyone you would like to acknowledge] for [what you would like to acknowledge them for].
-
----
-
-Designed and developed by [@DALI Lab](https://github.com/dali-lab)
-
-### Template
-
-- Eric Lu '25
-
-Additional credit goes to Adam McQuilkin '22, Ziray Hao '22, Jack Keane '22, Thomas Monfre '21 for developing the original DALI CRUD Template Backend, which this starter pack was evolved from.

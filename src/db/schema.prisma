@@ -21,26 +21,19 @@ model User {
   role      UserRole @default(UNVERIFIED)
   createdAt DateTime @db.Date @default(now())
   updatedAt DateTime @updatedAt
+  timeGoal  String
+  wordGoal  String
 }
 
-model Resource {
+model Day {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  description String
   title       String
   value       Int
-  item        Item?
-  createdAt   DateTime @db.Date @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model Item {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  description String
-  name        String
-  resource    Resource  @relation(fields: [resourceId], references: [id])
-  resourceId  String @map("resource") @unique @db.ObjectId
-  createdAt   DateTime @db.Date @default(now())
-  updatedAt   DateTime @updatedAt
+  year        Int      // Year (e.g., 2025)
+  month       Int      // Month (1-12)
+  date        Int      // Day of the month (1-31)
+  totalTime   Int
+  totalWords  Int
 }
 
 model VerificationCode {

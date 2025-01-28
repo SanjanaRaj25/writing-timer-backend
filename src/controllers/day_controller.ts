@@ -3,24 +3,24 @@ import { ValidatedRequest } from "express-joi-validation";
 import { BaseError } from "errors";
 import { getSuccessfulDeletionMessage } from "util/constants";
 import { CreateResourceRequest, UpdateResourceRequest } from "validation/day";
-import { resourceService } from "services";
+import { dayService } from "../services/day_service";
 
-const createResource: RequestHandler = async (
+const createDay: RequestHandler = async (
   req: ValidatedRequest<CreateResourceRequest>,
   res,
   next,
 ) => {
   try {
-    const savedResource = await resourceService.createResource(req.body);
+    const savedResource = await dayService.createDay(req.body);
     res.status(201).json(savedResource);
   } catch (error) {
     next(error);
   }
 };
 
-const getResources: RequestHandler = async (req, res, next) => {
+const getDays: RequestHandler = async (req, res, next) => {
   try {
-    const resources = await resourceService.getResources({
+    const resources = await dayService.getDays({
       ...req.query,
     });
     res.status(200).json(resources);
@@ -29,9 +29,9 @@ const getResources: RequestHandler = async (req, res, next) => {
   }
 };
 
-const getResource: RequestHandler = async (req, res, next) => {
+const getDay: RequestHandler = async (req, res, next) => {
   try {
-    const resources = await resourceService.getResources({
+    const resources = await dayService.getDays({
       id: req.params.id,
       ...req.query,
     });
@@ -45,18 +45,17 @@ const getResource: RequestHandler = async (req, res, next) => {
   }
 };
 
-const updateResource: RequestHandler = async (
+const updateDay: RequestHandler = async (
   req: ValidatedRequest<UpdateResourceRequest>,
   res,
   next,
 ) => {
   try {
     // ! Don't let user update protected fields
-    const { title, description, value } = req.body;
+    const { title, value } = req.body;
 
-    const resource = await resourceService.updateResource(req.params.id, {
+    const resource = await dayService.updateDay(req.params.id, {
       title,
-      description,
       value,
     });
     res.status(200).json(resource);
@@ -65,9 +64,9 @@ const updateResource: RequestHandler = async (
   }
 };
 
-const deleteResource: RequestHandler = async (req, res, next) => {
+const deleteDay: RequestHandler = async (req, res, next) => {
   try {
-    await resourceService.deleteResource(req.params.id);
+    await dayService.deleteDay(req.params.id);
     res
       .status(200)
       .json({ message: getSuccessfulDeletionMessage(req.params.id) });
@@ -76,12 +75,12 @@ const deleteResource: RequestHandler = async (req, res, next) => {
   }
 };
 
-const resourceController = {
-  createResource,
-  getResources,
-  getResource,
-  updateResource,
-  deleteResource,
+const dayController = {
+  createDay,
+  getDay,
+  getDays,
+  updateDay,
+  deleteDay,
 };
 
-export default resourceController;
+export default dayController;

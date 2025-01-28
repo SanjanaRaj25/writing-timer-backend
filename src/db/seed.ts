@@ -1,40 +1,45 @@
-import bcrypt from 'bcrypt';
-import { UserRole, PrismaClient } from '@prisma/client';
-import { HASH_ROUNDS } from 'util/constants';
+import bcrypt from "bcrypt";
+import { PrismaClient, UserRole } from ".prisma/client";
+import { HASH_ROUNDS } from "../util/constants";
 
 const prisma = new PrismaClient();
 
 async function main() {
-
-  /**
-   * User Data
-   */
+  // User Data
   const users = [
     {
-      email: 'unverified@gmail.com',
-      password: await bcrypt.hash('12345', HASH_ROUNDS),
-      name: 'Unverified',
+      email: "unverified@gmail.com",
+      password: await bcrypt.hash("12345", HASH_ROUNDS),
+      name: "Unverified User",
       role: UserRole.UNVERIFIED,
+      timeGoal: "2 hours",
+      wordGoal: "500 words",
       createdAt: new Date(),
       updatedAt: new Date(),
     },
     {
-      email: 'user@gmail.com',
-      password: await bcrypt.hash('12345', HASH_ROUNDS),
-      name: 'User',
+      email: "user@gmail.com",
+      password: await bcrypt.hash("12345", HASH_ROUNDS),
+      name: "Normal User",
       role: UserRole.USER,
+      timeGoal: "3 hours",
+      wordGoal: "1000 words",
       createdAt: new Date(),
       updatedAt: new Date(),
     },
     {
-      email: 'admin@gmail.com',
-      password: await bcrypt.hash('12345', HASH_ROUNDS),
-      name: 'Admin',
+      email: "admin@gmail.com",
+      password: await bcrypt.hash("12345", HASH_ROUNDS),
+      name: "Administrator",
       role: UserRole.ADMIN,
+      timeGoal: "5 hours",
+      wordGoal: "5000 words",
       createdAt: new Date(),
       updatedAt: new Date(),
     },
   ];
+
+  // Create Users
   await Promise.all(
     users.map(async (user) => {
       try {
@@ -48,98 +53,47 @@ async function main() {
           },
         });
       } catch (e) {
-        console.log(e);
+        console.log("Error creating user:", e);
       }
-    }));
+    }),
+  );
 
-  /**
-  * Resource Data
-  */
-  const resources = [
+  // Day Data
+  const days = [
     {
-      title: 'The Grapes of Wrath',
-      description: 'John Steinbeck',
-      value: 1,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      title: 'The Great Gatsby',
-      description: 'F. Scott Fitzgerald',
-      value: 5,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      title: 'Macbeth',
-      description: 'William Shakespeare',
+      title: "Day 1",
       value: 10,
+      year: 2025,
+      month: 1, // January
+      date: 1,
+      totalTime: 120, // Total minutes
+      totalWords: 1000,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
     {
-      title: 'Heart of Darkness',
-      description: 'Joseph Conrad',
-      value: 15,
+      title: "Day 2",
+      value: 20,
+      year: 2025,
+      month: 1, // January
+      date: 2,
+      totalTime: 180,
+      totalWords: 1500,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
   ];
-  const resourceIds: string[] = [];
-  await Promise.all(
-    resources.map(async (resource) => {
-      try {
-        const res = await prisma.resource.create({
-          data: {
-            ...resource,
-          },
-        });
-        resourceIds.push(res.id);
-      } catch (e) {
-        console.log(e);
-      }
-    }));
 
-  /**
-    * Item Data
-    */
-  const items = [
-    {
-      resourceId: resourceIds[0],
-      name: 'Item Name A',
-      description: 'Description Name A',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      resourceId: resourceIds[1],
-      name: 'Item Name B',
-      description: 'Description Name B',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-  ];
-  await Promise.all(
-    items.map(async (item) => {
-      try {
-        await prisma.item.create({
-          data: {
-            ...item,
-          },
-        });
-      } catch (e) {
-        console.log(e);
-      }
-    }));
-  console.log('Seeding done');
+  console.log("Seeding done");
   process.exit(0);
 }
+
 main()
   .then(async () => {
     await prisma.$disconnect();
   })
   .catch(async (e) => {
-    console.error(e);
+    console.error("Seeding failed:", e);
     await prisma.$disconnect();
     process.exit(1);
   });
